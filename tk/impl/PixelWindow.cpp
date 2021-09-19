@@ -8,6 +8,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <X11/Xlib.h>
+#include <X11/Xutil.h>
 #include <thread>
 #include <functional>
 
@@ -17,8 +18,13 @@ PixelWindow::PixelWindow()
 { }
 
 // Create the window, windowWidth, windowHeight.
-void PixelWindow::create(int windowWidth, int windowHeight)
+void PixelWindow::create(PixelWindow::WindowOptions options)
 {
+    int windowWidth = options.width;
+    int windowHeight = options.height;
+    int windowX = options.x;
+    int windowY = options.y;
+
     // Open the current/default display.
     display = XOpenDisplay(NULL);
 
@@ -27,8 +33,8 @@ void PixelWindow::create(int windowWidth, int windowHeight)
 
     // Create the window.
     window = XCreateSimpleWindow(display, RootWindow(display, screen),
-        10, // X
-        10, // Y
+        windowX, // X
+        windowY, // Y
         windowWidth, windowHeight,
         5, // Border width.
         WhitePixel(display, screen), // Border
@@ -36,6 +42,9 @@ void PixelWindow::create(int windowWidth, int windowHeight)
 
     // Be notified for window re-draws, key presses, and mouse button clicks.
     XSelectInput(display, window, ExposureMask | ButtonPressMask | KeyPressMask | SubstructureNotifyMask);
+
+    // Configure min/max size, etc.
+    configureWindow(display, window, options);
 
     // Display the window.
     XMapWindow(display, window);
@@ -54,6 +63,31 @@ void PixelWindow::create(int windowWidth, int windowHeight)
     foreground.blue = 1000;
 
     Status colorStatus = XAllocColor(display, mainColormap, &foreground);
+}
+
+void PixelWindow::configureWindow(Display* display, Window window, const PixelWindow::WindowOptions& options) const
+{
+    // See https://tronche.com/gui/x/xlib/ICC/client-to-window-manager/wm-normal-hints.html
+    // Set the minimum and maximum size.
+    XSizeHints* hints = XAllocSizeHints();
+
+    hints->flags = 0;
+
+    if (options.minWidth >= 0 && options.minHeight >= 0)
+    {
+        hints->flags |= PMinSize;
+        hints->min_width = options.minWidth;
+        hints->min_height = options.minHeight;
+    }
+
+    if (options.maxWidth > 0 && options.maxHeight > 0)
+    {
+        hints->flags |= PMaxSize;
+        hints->max_width = options.maxWidth;
+        hints->max_height = options.maxHeight;
+    }
+
+    XSetWMNormalHints(display, window, hints);
 }
 
 // Set the current renderer.

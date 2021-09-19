@@ -10,8 +10,18 @@
 
 int main(int argc, char* argv[])
 {
+    PixelWindow::WindowOptions windowOpts {};
     PixelWindow mainWindow { };
-    mainWindow.create(500, 80);
+
+    windowOpts.width = 500;
+    windowOpts.height = 80;
+
+    windowOpts.minWidth = 500;
+    windowOpts.minHeight = 80;
+    windowOpts.maxWidth = 500;
+    windowOpts.maxHeight = 80;
+
+    mainWindow.create(windowOpts);
 
     WordCompleter completer
     {
