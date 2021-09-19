@@ -19,7 +19,7 @@ include_directories("tk/pub/")
 target_link_libraries(PxTk ${X11_LIBRARIES})
 
 # Add the sources
-add_executable(WLaunch "app/main.cpp" "app/MainRenderer.cpp" "app/WordCompleter.cpp")
+add_executable(XLaunch "app/main.cpp" "app/MainRenderer.cpp" "app/WordCompleter.cpp")
 
-target_link_libraries(WLaunch PxTk)
+target_link_libraries(XLaunch PxTk)
 
