@@ -21,6 +21,17 @@
 #define DOWN_KEY 65364
 #define ENTER_KEY 65293
 
+#define TEXT_DEFAULT_R 200
+#define TEXT_DEFAULT_G 100
+#define TEXT_DEFAULT_B 220
+
+#define TEXT_HI_R 250
+#define TEXT_HI_G 200
+#define TEXT_HI_B 100
+
+const int CHAR_W = 3;
+const int CHAR_H = 4;
+
 class MainRenderer::Impl
 {
 public:
@@ -55,7 +66,7 @@ void MainRenderer::render(PixelSetter* out, int w, int h)
 MainRenderer::Impl::Impl(MainRenderer::tabCompletionFn_t completer, MainRenderer::onSubmitFn_t onSubmit)
     : completer_ { completer }
 {
-    editor_.setTextSize(3, 4);
+    editor_.setTextSize(CHAR_W, CHAR_H);
     editor_.getContent() = "";
 
     editor_.setNewLineCallback([=](std::string& text)
@@ -92,14 +103,26 @@ void MainRenderer::Impl::render(PixelSetter* pixelSetter, int width, int height)
     viewTransformer_->transformMatrix *= scaleMatrix;
 
     viewTransformer_->clear(0);
-    viewTransformer_->setColor(255, 0, 255);
+    viewTransformer_->setColor(TEXT_DEFAULT_R, TEXT_DEFAULT_G, TEXT_DEFAULT_B);
 
-    //int suggestionX = width / 2 + 3;
     int textX = 22;
     int textY = 3;
-    textRenderer_.drawWrapped("> ", 3, textY, *viewTransformer_, 3, 4, width);
+    textRenderer_.drawWrapped("> ", 3, textY, *viewTransformer_, CHAR_W, CHAR_H, width);
+    
+    if (completionIdx >= 0)
+    {
+        // If we're showing completions, highlight the entry
+        viewTransformer_->setColor(TEXT_HI_R, TEXT_HI_G, TEXT_HI_B);
+    }
 
     editor_.render(*viewTransformer_, textX, textY, width);// / 2);
+
+    // If we're showing completions, cover up the part of the entry we're not completing
+    if (completionIdx >= 0)
+    {
+        viewTransformer_->setColor(TEXT_DEFAULT_R, TEXT_DEFAULT_G, TEXT_DEFAULT_B);
+        textRenderer_.drawWrapped(preCompletionCmd_, textX, textY, *viewTransformer_, CHAR_W, CHAR_H, width);
+    }
 }
 
 void MainRenderer::Impl::handleKeyInput(KeyInfo& keyData)

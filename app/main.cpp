@@ -16,10 +16,10 @@ int main(int argc, char* argv[])
     windowOpts.width = 500;
     windowOpts.height = 80;
 
-    windowOpts.minWidth = 500;
-    windowOpts.minHeight = 80;
-    windowOpts.maxWidth = 500;
-    windowOpts.maxHeight = 80;
+    windowOpts.minWidth = windowOpts.width;
+    windowOpts.minHeight = windowOpts.height;
+    windowOpts.maxWidth = windowOpts.width;
+    windowOpts.maxHeight = windowOpts.height;
 
     mainWindow.create(windowOpts);
 
