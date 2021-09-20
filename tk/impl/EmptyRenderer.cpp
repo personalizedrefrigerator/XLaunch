@@ -8,6 +8,6 @@
 
 EmptyRenderer::~EmptyRenderer()
 {
-	// No variables to deconstruct.
+    // No variables to deconstruct.
 }
 

@@ -3,6 +3,6 @@
 
 void PixelSetter::clear(unsigned char clearValue)
 {
-	char * data = getDataPtr();
-	std::memset(data, clearValue, getDataLength());
+    char * data = getDataPtr();
+    std::memset(data, clearValue, getDataLength());
 }

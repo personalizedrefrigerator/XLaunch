@@ -18,21 +18,13 @@
 
 #pragma once
 
-#include <functional>
-#include <memory>
-#include <string>
+/**
+ * Defines some of the keycodes used by PixelWindow.cpp.
+ */
 
-class WordCompleter
-{
-public:
-    WordCompleter(std::function<std::string()> source);
-    ~WordCompleter();
-
-    /// Get the [idx]th word from the completions list
-    /// that starts with [key].
-    std::string complete(int idx, const std::string& key);
-private:
-    class Impl;
-    std::unique_ptr<Impl> pImpl;
-};
+#define ESC_KEY 65307
+#define TAB_KEY 65289
+#define UP_KEY 65362
+#define DOWN_KEY 65364
+#define ENTER_KEY 65293
 

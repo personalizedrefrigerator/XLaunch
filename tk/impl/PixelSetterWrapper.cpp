@@ -8,39 +8,39 @@
 
 void PixelSetterWrapper::setAt(int x, int y)
 {
-	givenPixelSetter->setAt(x, y);
+    givenPixelSetter->setAt(x, y);
 }
 
 Color PixelSetterWrapper::getAt(int x, int y) const
 {
-	return givenPixelSetter->getAt(x, y);
+    return givenPixelSetter->getAt(x, y);
 }
 
 void PixelSetterWrapper::setColor(int r, int g, int b)
 {
-	givenPixelSetter->setColor(r, g, b);
+    givenPixelSetter->setColor(r, g, b);
 }
 
 char * PixelSetterWrapper::getDataPtr() const
 {
-	return givenPixelSetter->getDataPtr();
+    return givenPixelSetter->getDataPtr();
 }
 
 long PixelSetterWrapper::getDataLength() const
 {
-	return givenPixelSetter->getDataLength();
+    return givenPixelSetter->getDataLength();
 }
 
 bool PixelSetterWrapper::setPixelSetter(PixelSetter * newPixelSetter)
 {
-	 if(newPixelSetter != givenPixelSetter)
-	 {
-		 givenPixelSetter = newPixelSetter;
+     if(newPixelSetter != givenPixelSetter)
+     {
+    	 givenPixelSetter = newPixelSetter;
 
-		 return true;
-	 }
-	 else
-	 {
-		 return false;
-	 }
+    	 return true;
+     }
+     else
+     {
+    	 return false;
+     }
 }
